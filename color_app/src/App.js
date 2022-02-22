@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import {
-  Switch, // instead of Switch
+  Switch, 
   Route,
   
 } from "react-router-dom";
@@ -16,12 +16,13 @@ class App extends Component {
       return palette.id === id;
     });
   }
+  // este metodo sirve para retornar el obejto completo de seedColors (paleta de colores) que corresponda con el id ingresado 
   render() {
      return (
        <Switch>
          <Route 
          exact path="/" 
-         render={() => <PaletteList palettes={seedColors}/>}
+         render={(routeProps) => <PaletteList palettes={seedColors} {...routeProps}/>} //routeProps se importa para acceder a metodos como history para poder usarlo dentro de paletteList
          />
          <Route 
          exact path="/palette/:id" 
@@ -30,7 +31,7 @@ class App extends Component {
             palette={generatePalette(
               this.findPalette(routeProps.match.params.id)
             )}
-            />
+            /> 
          )}
          />
        </Switch>

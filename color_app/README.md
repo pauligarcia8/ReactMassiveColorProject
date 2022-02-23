@@ -43,4 +43,6 @@ Al ser un componente funcional se accede a **classes** directo desde props, si e
 
 **React-Router-Dom**
 El curso esta desactualizado, para la continuidad del mismo se opto por la instalacion de Router v5 y seguir con la explicación de Colt Steele, con la idea de hacer un refactor posteriormente.
+#### SingleColorPalette.js*
+- *gatherShades(palette, colorToFilterBy)* busca encontrar las key (100 - 900) dentro de un color, y concatenarselas a un array para luego filtrarlo y obtener un nuevo color.
 

@@ -20,25 +20,6 @@ class App extends Component {
   // este metodo sirve para retornar el obejto completo de seedColors (paleta de colores) que corresponda con el id ingresado 
   render() {
      return (
-      //  <Switch>
-      //    <Route 
-      //    exact path="/" 
-      //    render={routeProps => (
-      //    <PaletteList palettes={seedColors} {...routeProps}/>
-      //    )} //routeProps se importa para acceder a metodos como history para poder usarlo dentro de paletteList
-      //    />
-      //    <Route 
-      //    exact path="/palette/:id" 
-      //    render={routeProps => ( 
-      //       <Palette 
-      //       palette={generatePalette(
-      //         this.findPalette(routeProps.match.params.id)
-      //       )}
-      //       /> 
-      //    )}
-      //    />
-      //    <Route path='/palette/:paletteId/:colorId' render={() => <SingleColorPalette />}></Route>
-      //  </Switch>
        <Switch>
          <Route 
          exact 
@@ -62,9 +43,10 @@ class App extends Component {
            path='/palette/:paletteId/:colorId' 
            render={routeProps => ( 
              <SingleColorPalette
-               palette={generatePalette(
-               this.findPalette(routeProps.match.params.paletteId)
-               )} 
+              colorId={routeProps.match.params.colorId}
+              palette={generatePalette(
+              this.findPalette(routeProps.match.params.paletteId)
+              )} 
              />
            )} 
           />       

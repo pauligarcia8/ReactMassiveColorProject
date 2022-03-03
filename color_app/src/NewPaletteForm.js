@@ -1,7 +1,8 @@
 // ESTE COMPONENTE SE ACTUALIZO UTILIZANDO HOOKS YA QUE EL DRAWER DE MATERIAL UI CAMBIO MUCHO DESDE QUE LO UTILIZO COLT STEELE CUANDO HIZO EL CURSO.
 
 // import * as React from 'react';
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import DraggableColorBox from "./DraggableColorBox";
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
@@ -16,7 +17,8 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { ChromePicker } from 'react-color';
 import { Button } from '@mui/material';
-
+import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
+import { color } from "@mui/system";
 const drawerWidth = 400;
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
@@ -34,6 +36,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
         duration: theme.transitions.duration.enteringScreen,
       }),
       marginLeft: 0,
+      
     }),
   }),
 );
@@ -64,15 +67,34 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'flex-end',
 }));
 
-export default function NewPaletteForm() {
-  
-  const [open2, setOpen2] = useState(true);  
+
+
+export default function NewPaletteForm() {  
   const [currentColor, setCurrentColor] = useState('teal'); // Hook creado para manejar el color del color picker y el boton
-  const [colors, setColors] = useState(['purple', '#15764']);
+  const [colors, setColors] = useState([]);
+
+  const listColors = colors.map((color) => 
+  <DraggableColorBox color={color.color} name={color.name}/>
+  );
+
+  const [newName, setNewName] = useState("");
   //Material UI methods
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
+  useEffect(() => {
+    ValidatorForm.addValidationRule("isColorNameUnique", value => {
+      return colors.every(
+        ({ name }) => name.toLowerCase() !== value.toLowerCase()
+      );
+    });
+    ValidatorForm.addValidationRule("isColorUnique", value => {
+      return colors.every(
+        ({ color }) => color !== currentColor
+      );
+    });
+  });
+  
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -87,9 +109,19 @@ export default function NewPaletteForm() {
   };
 
   const addNewColor = () => {
-    setColors([...colors, ...currentColor])
+    const newColor = {
+      color: currentColor, 
+      name: newName
+    };
+    setColors([...colors, newColor])
     console.log(colors)
   };
+  const handleChange = (evt) => {
+    setNewName(evt.target.value)
+    console.log(newName)
+  };
+  
+
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -121,6 +153,7 @@ export default function NewPaletteForm() {
         variant="persistent"
         anchor="left"
         open={open}
+        containerStyle={{height: 'calc(100% - 64px)', top: 64}}
       >
         <DrawerHeader>
         <IconButton onClick={handleDrawerClose}>
@@ -136,19 +169,23 @@ export default function NewPaletteForm() {
             <Button variant='contained' color='primary'>Random Color</Button>
         </div>
           <ChromePicker color={currentColor} onChangeComplete={updateNewColor}/>
+          <ValidatorForm onSubmit={addNewColor}>
+            <TextValidator 
+            value={newName} 
+            onChange={handleChange}
+            validators={['required', 'isColorNameUnique', 'isColorUnique']}
+            errorMessages={['This field is required', 'Color name must be unique', 'Color is already used']}
+            />
           <Button 
           variant='contained' 
+          type="submit"
           style={{backgroundColor: currentColor}}
-          onClick={addNewColor}
           >Add Color</Button>
+          </ValidatorForm>
       </Drawer>
       <Main open={open}>
         <DrawerHeader />
-        <ul>
-          {colors.map(color => (
-            <li>{color}</li>
-          ))}
-        </ul>
+        <ul>{listColors}</ul>
       </Main>
     </Box>
   );

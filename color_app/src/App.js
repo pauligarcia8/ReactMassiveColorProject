@@ -13,19 +13,30 @@ import NewPaletteForm from "./NewPaletteForm";
 
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { palettes: seedColors };
+    this.savePalette = this.savePalette(this);
+    this.findPalette = this.findPalette(this);
+  }
   findPalette(id) {
-    return seedColors.find(function(palette) {
+    return this.state.palettes.find(function(palette) {
       return palette.id === id;
     });
   }
   // este metodo sirve para retornar el obejto completo de seedColors (paleta de colores) que corresponda con el id ingresado 
+  savePalette(newPalette) {
+    this.setState(
+      { palettes: [...this.state.palettes, newPalette]}
+    );
+  }
   render() {
      return (
        <Switch>
          <Route 
           exact 
           path="/palette/new" 
-          render={()=> <NewPaletteForm />}
+          render={(routeProps)=> <NewPaletteForm savePalette={this.savePalette} {...routeProps} />}
           /> 
           <Route 
            path='/palette/:paletteId/:colorId' 

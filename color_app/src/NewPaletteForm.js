@@ -16,9 +16,9 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { ChromePicker } from 'react-color';
-import { Button } from '@mui/material';
+import { Button, toggleButtonClasses } from '@mui/material';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
-import { color } from "@mui/system";
+
 const drawerWidth = 400;
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
@@ -121,11 +121,21 @@ export default function NewPaletteForm() {
     console.log(newName)
   };
   
-
+  const handleSubmit = () => {
+    const newPalette = {
+      paletteName: 'New Teste Palette', 
+      colors: colors
+    };
+    this.props.savePalette(newPalette);
+    this.props.history.push("/");
+  }
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open}>
+      <AppBar 
+      position="fixed" 
+      open={open} 
+      color='default'>
         <Toolbar>
           <IconButton
             color="inherit"
@@ -136,9 +146,15 @@ export default function NewPaletteForm() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
+          <Typography 
+          variant="h6" 
+          noWrap component="div">
             Persistent drawer
           </Typography>
+          <Button 
+          variant='contained' 
+          color='primary' 
+          onClick={handleSubmit}>Save Palette</Button>
         </Toolbar>
       </AppBar>
       <Drawer

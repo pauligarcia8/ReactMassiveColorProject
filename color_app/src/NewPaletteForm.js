@@ -69,7 +69,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 
 
-export default function NewPaletteForm() {  
+export default function NewPaletteForm(props) {  
   const [currentColor, setCurrentColor] = useState('teal'); // Hook creado para manejar el color del color picker y el boton
   const [colors, setColors] = useState([]);
 
@@ -126,8 +126,8 @@ export default function NewPaletteForm() {
       paletteName: 'New Teste Palette', 
       colors: colors
     };
-    this.props.savePalette(newPalette);
-    this.props.history.push("/");
+    props.savePalette(newPalette);
+    props.history.push("/");
   }
   return (
     <Box sx={{ display: 'flex' }}>

@@ -7,8 +7,8 @@ import Snackbar from "@material-ui/core/Snackbar";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Slider from 'rc-slider';
-import styles from "./styles/NavBarStyles";
 import 'rc-slider/assets/index.css';
+import styles from "./styles/NavBarStyles";
 
 class NavBar extends Component {
     constructor(props) {

@@ -30,7 +30,7 @@ class PaletteList extends Component {
     closeDialog = () => {
         this.setState({ openDeleteDialog: false, deletingId: ""});
     }
-    goToPalette(id) {
+    goToPalette = (id) => {
         this.props.history.push(`/palette/${id}`);
     }
     handleDelete = () => {
@@ -56,7 +56,7 @@ class PaletteList extends Component {
                         timeout={500}>
                         <MiniPalette 
                         {...palette} 
-                        handleClick={() => this.goToPalette(palette.id)}
+                        handleClick={this.goToPalette}
                         // handleDelete={deletePalette}
                         openDialog={this.openDialog}
                         key={palette.id}
